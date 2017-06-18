@@ -30,6 +30,45 @@ module.exports = merge(baseWebpackConfig, {
       template: 'index.html',
       inject: true
     }),
-    new FriendlyErrorsPlugin()
+    new FriendlyErrorsPlugin(),
+    new webpack.LoaderOptionsPlugin({
+      debug: true,
+      vue: {
+              postcss: pack => {
+              // see: https://github.com/ai/browserslist#queries
+              const browsers = 'Android >= 4, iOS >= 7'
+
+              return [
+                require('postcss-import')({
+                  // path: paths.src('application/styles')
+                }),
+                require('postcss-url')({
+                  // basePath: paths.src('static')
+                }),
+                require('postcss-cssnext')({
+                  browsers,
+                  features: {
+                    // customProperties: {
+                    //   variables: require(paths.src('application/styles/variables'))
+                    // },
+                    // 禁用 autoprefixer，在 postcss-rtl 后单独引入
+                    // 否则会跟 postcss-rtl 冲突
+                    autoprefixer: false
+                  }
+                }),
+                // 如果不需要 flexible，请移除
+                require('postcss-flexible')({
+                  remUnit: 75
+                }),
+                require('autoprefixer')({
+                  browsers
+                }),
+                require('postcss-browser-reporter')(),
+                require('postcss-reporter')()
+              ]
+            },
+            autoprefixer: false
+      }
+    }),
   ]
 })

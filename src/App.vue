@@ -1,23 +1,31 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view></router-view>
+    <div class="item-container">
+      <div v-for="route in routes" v-if="route.hidden !== true" class="item" @click="loadItem(route.path)">
+        {{ route.name }}
+      </div>
+    </div>
+    <div class="line"></div>
+    <router-view class="router-view"></router-view>
   </div>
 </template>
 
 <script>
+import routes from './router/routes'
+
 export default {
-  name: 'app'
+  name: 'app',
+  data () {
+    return {
+      routes: routes
+    }
+  },
+  methods: {
+    loadItem (path) {
+      this.$router.push(path)
+    }
+  }
 }
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<style src="./css/app.css"></style>
