@@ -1,0 +1,46 @@
+.area {
+  border: 1px solid #ccc;
+  padding: 5px 8px;
+  width: 100px;
+  position: relative;
+
+  &:before {
+    content: '';
+    position: absolute;
+    border: 5px solid #ccc;
+    border-color: transparent #ccc #ccc transparent;
+    transform: rotate(45deg);
+    right: 10px;
+    top: 8px;
+  }
+
+  &.show {
+    &:before {
+      transform: rotate(-135deg);
+      top: 13px;
+    }
+  }
+}
+
+.select-container {
+  border: 1px solid #ccc;
+  width: 116px;
+
+  & .select-item {
+    padding: 2px 5px;
+
+    &:nth-child(2n+1) {
+      background: #f0f0f0;
+    }
+  }
+}
+
+.provice {
+  position: relative;
+}
+
+.city, .county {
+  position: absolute;
+  left: 116px;
+  top: 0;
+}

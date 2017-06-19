@@ -15,7 +15,8 @@
 .item-container {
   height: 350px;
   display: flex;
-  flex-flow: row wrap;
+  flex-wrap: wrap;
+  align-content: flex-start;
 
   & .item {
     flex: 1;
