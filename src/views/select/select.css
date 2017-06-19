@@ -25,6 +25,7 @@
 .select-container {
   border: 1px solid #ccc;
   width: 116px;
+  background: #fff;
 
   & .select-item {
     padding: 2px 5px;
@@ -36,11 +37,11 @@
 }
 
 .provice {
-  position: relative;
+  position: absolute;
 }
 
 .city, .county {
   position: absolute;
   left: 116px;
-  top: 0;
+  top: 8px;
 }
