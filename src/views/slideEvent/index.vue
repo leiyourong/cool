@@ -1,7 +1,7 @@
 <template>
   <div class="slideEvent">
-    <div class="box">
-      <div :id="i-1" class="box-item" v-for="i in 16" @touchstart="touchstart" @touchend="touchend">{{ values[i-1] }}</div>
+    <div class="box" @touchstart="touchstart" @touchend="touchend">
+      <div :id="i-1" class="box-item" :type="mapValues[i-1]" v-for="i in 16">{{ mapValues[i-1] }}</div>
     </div>
   </div>
 </template>
@@ -9,11 +9,10 @@
 <script>
 export default {
   created () {
-    this.initBox()
+    this.initGame()
   },
   data () {
     return {
-      targetId: 0,
       startX: 0,
       startY: 0,
       mapValues: Array(16).fill(0)
@@ -23,19 +22,8 @@ export default {
     touchstart (e) {
       this.startX = e.touches[0].clientX
       this.startY = e.touches[0].clientY
-      this.targetId = +e.target.id
     },
     touchend (e) {
-      var start = Math.floor(this.targetId  / 4) * 4 + 1
-      var isBlankLine = true
-      for (var i=start; i<start+4; i++) {
-        if(this.mapValues[i]) {
-          isBlankLine = false
-          break;
-        }
-      }
-      if (isBlankLine) return
-
       var dir = ''
       var offsetX = e.changedTouches[0].clientX - this.startX
       var offsetY = e.changedTouches[0].clientY - this.startY
@@ -44,17 +32,24 @@ export default {
       } else {
         dir = offsetY > 0 ? 's' : 'n'
       }
-      this.mergeNum(start, dir)
+      this.mergeElement(dir)
     },
     initGame () {
-      this.makeNum()
-      this.makeNum()
+      this.mapValues[0] = 2
+      this.mapValues[1] = 2
+      this.mapValues[2] = 4
+      this.mapValues[3] = 8
+      // this.makeElement()
+      // this.makeElement()
     },
-    makeNum () {
+    makeElement () {
+      // 计算出可用的数组
       var availArr = []
       for (var i=0; i<=16; i++) {
         !this.mapValues[i] && availArr.push(i)
       }
+
+      // 生成数据
       var arrLength = availArr.length
       if (arrLength) {
         var randomIndex = Math.floor(Math.random() * arrLength)
@@ -63,64 +58,73 @@ export default {
         alert('Game Over!')
       }
     },
-    mergeNum (start, dir) {
+    mergeElement (dir) {
+      var start = 0
+      var startOffset = 0
       var offset = 0
-      var end = start + 3
       switch (dir) {
         // 右
         case 'e':
+          start = 3
+          startOffset = 4
           offset = -1
-          while (index % 4 !== 0) {
-            index+=size
-            if (this.values[index]) {
-              endId = index
-              break
-            }
-          }
           break;
         case 'w':
+          start = 0
+          startOffset = 4
+          offset = 1
           break;
         case 'n':
+          start = 0
+          startOffset = 1
+          offset = 4
           break;
         case 's':
+          start = 12
+          startOffset = 1
+          offset = -4
           break;
         default:
           break;
       }
-    },
-    resolveMove (offset, endId) {
-      var curIndex = endId,
-        cursor
-      if (this.mapValues[endId]) {
-
+      if (offset !== 0) {
+        this.merge(start, startOffset, offset)
       }
-      var cursor = endId
-      while(cursor)
+    },
+    // start:开始元素 startOffset: 开始元素间距 offset：同行（列）间距
+    merge (start, startOffset, offset) {
+      var times1=4, times2, times3
+      while (times1) {
+        var compareIndex = start
+        var canMerge = true
+        times2 = 4
+        while (times2) {
+          var index = compareIndex
+          var times3 = times2 - 1
+          var canMergeExt = canMerge
+          while (times3) {
+            if(this.mapValues[index+offset] !== 0){
+              if(this.mapValues[index] === this.mapValues[index+offset] && (canMergeExt || times3 !== 3)){
+                this.$set(this.mapValues, index, this.mapValues[index] + this.mapValues[index+offset])
+                this.$set(this.mapValues, index+offset, 0)
+                canMerge = false
+              } else if (this.mapValues[index] === 0) {
+                this.$set(this.mapValues, index, this.mapValues[index] + this.mapValues[index+offset])
+                this.$set(this.mapValues, index+offset, 0)
+              }
+            }
+            index += offset
+            times3--
+          }
+          times2--
+        }
+        times1--
+        start+=startOffset
+      }
+      this.makeElement()
     }
   }
 }
 </script>
 
-<style scoped>
-.box {
-  width: 280px;
-  height: 280px;
-  display: flex;
-  flex-wrap: wrap;
-  /*background: #ccc;*/
-  border: 1px solid red;
-  /*background: #ffbc20;*/
-  margin: 10px auto;
-  text-align: center;
-}
-.box-item {
-  width: 60px;
-  height: 60px;
-  background: #ccc;
-  margin: 5px;
-  color: red;
-  font-size: 16px;
-  text-align: center;
-  line-height: 60px;
-}
-</style>
+<style src="./2048.css" scoped></style>

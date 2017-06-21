@@ -1,0 +1,79 @@
+.box {
+  width: 280px;
+  height: 280px;
+  display: flex;
+  flex-wrap: wrap;
+  background: #baae9e;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  margin: 5px auto;
+  padding: 10px;
+  text-align: center;
+}
+.box-item {
+  width: 60px;
+  height: 60px;
+  background-color: #ccc;
+  margin: 5px;
+  color: #fff;
+  font-size: 32px;
+  text-align: center;
+  line-height: 60px;
+
+  &[type='0'] {
+    background-color: #ccc0b2;
+    color: transparent;
+  }
+  &[type='2'] {
+    background-color: #eee4da;
+    color: #857962;
+  }
+  &[type='4'] {
+    background-color: #eee4da;
+    color: #857962;
+  }
+  &[type='8'] {
+    background-color: #f2b179;
+    color: #fff;
+  }
+  &[type='16'] {
+    background-color: #f2b179;
+    font-size: 28px;
+  }
+  &[type='32'] {
+    background-color: #eda787;
+    font-size: 28px;
+  }
+  &[type='64'] {
+    background-color: #f0bba8;
+    font-size: 28px;
+  }
+  &[type='128'] {
+    background-color: #e8d153;
+    font-size: 24px;
+  }
+  &[type='256'] {
+    background-color: #106f86;
+    font-size: 24px;
+  }
+  &[type='512'] {
+    background-color: #a73aa7;
+    font-size: 24px;
+  }
+  &[type='1024'] {
+    background-color: #a12828;
+    font-size: 20px;
+  }
+  &[type='2048'] {
+    background-color: #f00;
+    font-size: 20px;
+  }
+  &[type='4096'] {
+    background-color: #555;
+    font-size: 20px;
+  }
+  &[type='8192'] {
+    background-color: #000;
+    font-size: 20px;
+  }
+}
