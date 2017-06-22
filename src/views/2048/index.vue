@@ -1,7 +1,7 @@
 <template>
   <div class="slideEvent">
     <div class="box" @touchstart="touchstart" @touchend="touchend">
-      <div :id="i-1" class="box-item" :type="mapValues[i-1]" v-for="i in 16">{{ mapValues[i-1] }}</div>
+      <div :id="i-1" class="box-item" :isNew="i-1 === newIndex" :type="mapValues[i-1]" v-for="i in 16">{{ mapValues[i-1] }}</div>
     </div>
   </div>
 </template>
@@ -15,7 +15,8 @@ export default {
     return {
       startX: 0,
       startY: 0,
-      mapValues: Array(16).fill(0)
+      mapValues: Array(16).fill(0),
+      newIndex: -1
     }
   },
   methods: {
@@ -35,28 +36,34 @@ export default {
       this.mergeElement(dir)
     },
     initGame () {
-      this.mapValues[0] = 2
-      this.mapValues[1] = 2
-      this.mapValues[2] = 4
-      this.mapValues[3] = 8
-      // this.makeElement()
-      // this.makeElement()
+      // this.mapValues[0] = 2
+      // this.mapValues[1] = 4
+      // this.mapValues[4] = 2
+      // this.mapValues[5] = 4
+      this.makeElement(true)
+      this.makeElement(true)
     },
-    makeElement () {
-      // 计算出可用的数组
-      var availArr = []
-      for (var i=0; i<=16; i++) {
-        !this.mapValues[i] && availArr.push(i)
-      }
-
+    makeElement (isInit) {
+      var availArr = this.getAvailArr()
       // 生成数据
       var arrLength = availArr.length
       if (arrLength) {
         var randomIndex = Math.floor(Math.random() * arrLength)
-        this.mapValues[availArr[randomIndex]] = 2
+        if (!isInit) {
+          this.newIndex = availArr[randomIndex]
+        }
+        this.$set(this.mapValues, availArr[randomIndex], 2)
       } else {
         alert('Game Over!')
       }
+    },
+    // 计算出可用的数组
+    getAvailArr () {
+      var availArr = []
+      for (var i=0; i<16; i++) {
+        !this.mapValues[i] && availArr.push(i)
+      }
+      return availArr
     },
     mergeElement (dir) {
       var start = 0
@@ -93,35 +100,40 @@ export default {
     },
     // start:开始元素 startOffset: 开始元素间距 offset：同行（列）间距
     merge (start, startOffset, offset) {
-      var times1=4, times2, times3
+      var times1=4
+      var makeFlag = false
+
       while (times1) {
-        var compareIndex = start
-        var canMerge = true
-        times2 = 4
-        while (times2) {
-          var index = compareIndex
-          var times3 = times2 - 1
-          var canMergeExt = canMerge
-          while (times3) {
-            if(this.mapValues[index+offset] !== 0){
-              if(this.mapValues[index] === this.mapValues[index+offset] && (canMergeExt || times3 !== 3)){
-                this.$set(this.mapValues, index, this.mapValues[index] + this.mapValues[index+offset])
-                this.$set(this.mapValues, index+offset, 0)
-                canMerge = false
-              } else if (this.mapValues[index] === 0) {
-                this.$set(this.mapValues, index, this.mapValues[index] + this.mapValues[index+offset])
-                this.$set(this.mapValues, index+offset, 0)
+        for (var times2=4,index = start,exChangeIndex = -1; times2>0; times2--,index += offset) {
+          if(this.mapValues[index] !== 0){
+            if (exChangeIndex === -1) {
+              exChangeIndex = index
+            } else if(this.mapValues[index] === this.mapValues[exChangeIndex]) {
+              makeFlag = true
+              this.$set(this.mapValues, exChangeIndex, this.mapValues[index] + this.mapValues[exChangeIndex])
+              this.$set(this.mapValues, index, 0)
+              exChangeIndex = -1
+            } else {
+              exChangeIndex = index
+            }
+          }
+        }
+        for (var compareIndex=start,times3=3;times3>0;compareIndex+=offset,times3--){
+          if (!this.mapValues[compareIndex]) {
+            for (var j=compareIndex+offset,c=times3;c>0;c--,j+=offset) {
+              if (this.mapValues[j]) {
+                makeFlag = true
+                this.$set(this.mapValues, compareIndex, this.mapValues[j])
+                this.$set(this.mapValues, j, 0)
+                break
               }
             }
-            index += offset
-            times3--
           }
-          times2--
         }
         times1--
         start+=startOffset
       }
-      this.makeElement()
+      makeFlag && this.makeElement()
     }
   }
 }
