@@ -1,6 +1,6 @@
 import Carousel from '../views/carousel/index'
 import Game2048 from '../views/2048/index'
-import Select from '../views/select/index'
+import FormItem from '../views/formItem/index'
 
 var routes = [
   {
@@ -14,9 +14,9 @@ var routes = [
     component: Game2048
   },
   {
-    path: '/select',
-    name: '三级级联下拉',
-    component: Select
+    path: '/formItem',
+    name: '表单控件',
+    component: FormItem
   }
 ]
 

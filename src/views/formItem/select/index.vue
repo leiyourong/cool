@@ -12,7 +12,6 @@
         </div>
       </div>
     </div>
-    <div style="margin: 10px 0;">{{ currentArea === '选择地区' ? '你未选择地区' : ('你选择的地区是 ' + currentArea)  }}</div>
   </div>
 </template>
 
