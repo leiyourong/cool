@@ -36,16 +36,27 @@ export default {
       this.mergeElement(dir)
     },
     initGame () {
-      // this.mapValues[0] = 2
-      // this.mapValues[1] = 4
-      // this.mapValues[4] = 2
-      // this.mapValues[5] = 4
-      this.makeElement(true)
-      this.makeElement(true)
+      this.mapValues = []
+      this.mapValues[0] = 16
+      this.mapValues[1] = 8
+      this.mapValues[2] = 4
+      this.mapValues[3] = 2
+      this.mapValues[4] = 32
+      this.mapValues[5] = 64
+      this.mapValues[6] = 128
+      this.mapValues[7] = 256
+      this.mapValues[8] = 512
+      this.mapValues[9] = 1024
+      this.mapValues[10] = 2048
+      this.mapValues[11] = 4096
+      this.mapValues[12] = 32
+      this.mapValues[13] = 64
+      this.mapValues[14] = 128
+      // this.makeElement(true)
+      // this.makeElement(true)
     },
     makeElement (isInit) {
       var availArr = this.getAvailArr()
-      // 生成数据
       var arrLength = availArr.length
       if (arrLength) {
         var randomIndex = Math.floor(Math.random() * arrLength)
@@ -53,9 +64,26 @@ export default {
           this.newIndex = availArr[randomIndex]
         }
         this.$set(this.mapValues, availArr[randomIndex], 2)
-      } else {
-        alert('Game Over!')
+        this.$nextTick(() => {
+          if (confirm('GameOver! restart?')){
+            this.initGame()
+          }
+        })
       }
+    },
+    isGameOver () {
+      var isOver = true
+      for(var i=0; i<15 && isOver; i++){
+        if(i%4 !== 3 && this.mapValues[i] === this.mapValues[i+1]){
+          isOver = false
+        }
+      }
+      for(var i=0; i<12 && isOver; i++){
+        if(this.mapValues[i] === this.mapValues[i+4]){
+          isOver = false
+        }
+      }
+      return isOver
     },
     // 计算出可用的数组
     getAvailArr () {
