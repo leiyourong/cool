@@ -3,6 +3,10 @@
     <div class="box" @touchstart="touchstart" @touchend="touchend">
       <div :id="i-1" class="box-item" :isNew="i-1 === newIndex" :type="mapValues[i-1]" v-for="i in 16">{{ mapValues[i-1] }}</div>
     </div>
+    <div class="score">
+      {{ score }}
+      <input type="button" value="开始游戏" v-if="typeof score !== 'number'" @click="initGame" />
+    </div>
   </div>
 </template>
 
@@ -16,7 +20,8 @@ export default {
       startX: 0,
       startY: 0,
       mapValues: Array(16).fill(0),
-      newIndex: -1
+      newIndex: -1,
+      score: 2
     }
   },
   methods: {
@@ -36,27 +41,14 @@ export default {
       this.mergeElement(dir)
     },
     initGame () {
-      this.mapValues = []
-      this.mapValues[0] = 16
-      this.mapValues[1] = 8
-      this.mapValues[2] = 4
-      this.mapValues[3] = 2
-      this.mapValues[4] = 32
-      this.mapValues[5] = 64
-      this.mapValues[6] = 128
-      this.mapValues[7] = 256
-      this.mapValues[8] = 512
-      this.mapValues[9] = 1024
-      this.mapValues[10] = 2048
-      this.mapValues[11] = 4096
-      this.mapValues[12] = 32
-      this.mapValues[13] = 64
-      this.mapValues[14] = 128
-      // this.makeElement(true)
-      // this.makeElement(true)
+      this.mapValues = Array(16).fill(0)
+      this.score = 2
+      this.makeElement(true)
+      this.makeElement(true)
     },
     makeElement (isInit) {
       var availArr = this.getAvailArr()
+      // 生成数据
       var arrLength = availArr.length
       if (arrLength) {
         var randomIndex = Math.floor(Math.random() * arrLength)
@@ -64,26 +56,27 @@ export default {
           this.newIndex = availArr[randomIndex]
         }
         this.$set(this.mapValues, availArr[randomIndex], 2)
-        this.$nextTick(() => {
-          if (confirm('GameOver! restart?')){
-            this.initGame()
-          }
-        })
+      }
+      if(this.isOver()){
+        this.score = '游戏结束！'
       }
     },
-    isGameOver () {
-      var isOver = true
-      for(var i=0; i<15 && isOver; i++){
-        if(i%4 !== 3 && this.mapValues[i] === this.mapValues[i+1]){
-          isOver = false
+    isOver () {
+      for (var i=0; i<16; i+=4) {
+        for (var j=i,times=0;times<3;times++,j++) {
+          if(this.mapValues[j] === this.mapValues[j+1]) {
+            return false
+          }
         }
       }
-      for(var i=0; i<12 && isOver; i++){
-        if(this.mapValues[i] === this.mapValues[i+4]){
-          isOver = false
+      for (var i=0; i<4; i+=1) {
+        for (var j=i,times=0;times<3;times++,j+=4) {
+          if(this.mapValues[j] === this.mapValues[j+4]) {
+            return false
+          }
         }
       }
-      return isOver
+      return true
     },
     // 计算出可用的数组
     getAvailArr () {
@@ -138,7 +131,11 @@ export default {
               exChangeIndex = index
             } else if(this.mapValues[index] === this.mapValues[exChangeIndex]) {
               makeFlag = true
-              this.$set(this.mapValues, exChangeIndex, this.mapValues[index] + this.mapValues[exChangeIndex])
+              var score = this.mapValues[index] + this.mapValues[exChangeIndex]
+              if (score > this.score) {
+                this.score = score
+              }
+              this.$set(this.mapValues, exChangeIndex, score)
               this.$set(this.mapValues, index, 0)
               exChangeIndex = -1
             } else {
