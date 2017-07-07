@@ -1,7 +1,7 @@
 .calendar {
   position: relative;
 
-  & input {
+  & >input {
     height: 24px;
     width: 200px;
     font-size: 18px;
@@ -10,24 +10,30 @@
   & .calendar-main {
     position: absolute;
     width: 290px;
-    background: #f0f0f0;
+    background: #fff;
+    box-shadow: 1px 1px 4px #ccc;
 
     & .year-month {
       display: flex;
+      background: #41a9cc;
+      color: white;
+      height: 24px;
+      padding: 3px 0;
+      margin: 2px;
 
       & .year,& .month {
         flex: 1;
         text-align: center;
         position: relative;
 
-        &:before {
-          content: '<';
+        & .before {
+          display: inline-block;
           position: absolute;
           left: 10px;
         }
 
-        &:after {
-          content: '>';
+        & .after {
+          display: inline-block;
           position: absolute;
           right: 10px;
         }
@@ -36,6 +42,7 @@
 
     & .week {
       display: flex;
+      padding: 4px 0;
 
       & .week-item {
         flex: 1;
@@ -48,10 +55,37 @@
     }
 
     & .day {
+      display: flex;
+      flex-wrap: wrap;
+
       & .day-item {
         text-align: center;
         width: 14.2%;
         display: inline-block;
+        padding: 2px 0;
+
+        &.selected {
+          background: #41a9cc;
+          color: white;
+        }
+
+        &.show-only {
+          color: #ccc;
+        }
+      }
+    }
+
+    & .operator {
+      display: flex;
+      margin: 5px;
+
+      & .bt {
+        flex: 1;
+        margin: 0 2px;
+        text-align: center;
+        color: white;
+        padding: 2px;
+        background: #41a9cc;
       }
     }
   }
