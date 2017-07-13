@@ -28,6 +28,7 @@
     border: 1px solid #ccc;
     width: 116px;
     background: #fff;
+    z-index: 999;
 
     & .select-item {
       padding: 2px 5px;
