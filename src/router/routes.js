@@ -1,6 +1,7 @@
 import Carousel from '../views/carousel/index'
 import Game2048 from '../views/2048/index'
 import FormItem from '../views/formItem/index'
+import Svg from '../views/svg/index'
 
 var routes = [
   {
@@ -17,6 +18,11 @@ var routes = [
     path: '/formItem',
     name: '表单控件',
     component: FormItem
+  },
+  {
+    path: '/svg',
+    name: 'SVG',
+    component: Svg
   }
 ]
 
