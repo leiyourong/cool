@@ -16,13 +16,18 @@
       <line x1="0" y1="20" x2="170" y2="20" stroke="black" stroke-dasharray="3,1" stroke-width="2"/>
       <!-- fill-rule:noneZero/evenodd -->
       <polygon points="190,0 180,40 208,16 172,16 200,40" fill="red" fill-rule="evenodd" />
-      <polyline points="220,0 248,0 215,7 217,25 219,7 252,7 250,25 218,12 251,12 218,18 251,18 234,7 234,23 218,26 220,44 222,26 250,26 248,44 218,35 249,35 220,44 248,44 234,26 234,44" fill="none" stroke="black" stroke-width="1" />
+      <g>
+        <polyline id="lei" points="220,0 248,0 215,7 217,25 219,7 252,7 250,25 218,12 251,12 218,18 251,18 234,7 234,23 218,26 220,44 222,26 250,26 248,44 218,35 249,35 220,44 248,44 234,26 234,44" stroke-dasharray="1000" fill="none" stroke="black" stroke-width="1" />
+        <animate attributeName="stroke-dashoffset" begin="0s" dur="5s" from="1000" to="0" repeatCount="indefinite"/>
+      </g>
       <path d="M277 15 m-20 2 l2 20 l36 0 l2 -20 l-40 0 m0 10 l40 0 m-20 10 l0 -29" fill="none" stroke="black" />
       <text x="150" y="18" fill="black" transform="scale(2,2)">荣</text>
       <g>
         <polygon points="80,54 130,54 130,90 80,90" fill="none" stroke="black" stroke-width="4" />
         <polygon points="85,85 96,60 108,78 118,72 125,85" fill="black" stroke="black" stroke-width="2" />
-        <circle cx="120" cy="63" r="4" fill="black" />
+        <circle cx="120" cy="63" r="4" fill="black">
+          <animateMotion path="m0,0 l15,-15 l0,48 l-60,0 l0,-48 l30,0Z" begin="0s" dur="8s" delay="3" repeatCount="indefinite"/>
+        </circle>
       </g>
       <g fill="black">
         <ellipse cx="20" cy="90" rx="8" ry="6" />
@@ -30,6 +35,7 @@
         <ellipse cx="45" cy="85" rx="8" ry="6" />
         <line x1="53" y1="85" x2="53" y2="56" stroke="black" stroke-width="2" />
         <line x1="28" y1="66" x2="53" y2="61" stroke="black" stroke-width="10" />
+        <animateTransform attributeName="transform" begin="0s" dur="3s"  type="rotate" from="0 35 80" to="360 35 80" repeatCount="indefinite"/>
       </g>
     </svg>
   </div>
@@ -45,4 +51,6 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+
+</style>
