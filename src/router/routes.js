@@ -1,13 +1,13 @@
-import Carousel from '../views/carousel/index'
+import Image from '../views/image/index'
 import Game2048 from '../views/2048/index'
 import FormItem from '../views/formItem/index'
 import Svg from '../views/svg/index'
 
 var routes = [
   {
-    path: '/carousel',
-    name: '轮播图',
-    component: Carousel
+    path: '/image',
+    name: '图片效果',
+    component: Image
   },
   {
     path: '/2048',

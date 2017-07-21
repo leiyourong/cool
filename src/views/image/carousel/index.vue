@@ -43,6 +43,9 @@ export default {
     isShow (val) {
       return val.endsWith(this.currentIndex) ? true : false
     },
+    dialogRender () {
+
+    },
     startTimer () {
       var that = this
       this.clearTimer()
